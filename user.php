@@ -21,30 +21,28 @@ class User {
 		$stmt->bindParam(":password", $password, PDO::PARAM_STR); #md5 secure 
 		$stmt->execute();
 
+		#this is changes that i have made.
 		$user = $stmt->fetch(PDO::FETCH_OBJ);
-		$count = $stmt->rowCount();
+
 
 		if($count > 0) {
 			$_SESSSION['user_id'] = $user->user_id;
 			header('Location: home.php');
 		}else {
+			
 			return false;
 		}
 	}
 
 	public function userData($user_id){
+
 		$stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `user_id` = :user_id");
 		$stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->fetch(PDO::FETCH_OBJ);
-
+		
 	}
 
-	public function logout (){
-		$_SESSSION = array();
-		session_destroy();
-		header('Location: ../index.php');
-	}
 }
 
 
